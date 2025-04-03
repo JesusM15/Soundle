@@ -1,0 +1,44 @@
+@font-face {
+    font-family: 'Roboto';
+    src: url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap') format('woff2');
+}
+
+@font-face {
+    font-family: 'Pacifico';
+    src: url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap') format('woff2');
+}  
+@import "tailwindcss";
+
+@theme{
+    --font-pacifico: Pacifico, "sands-serif"
+}
+
+@theme{
+    --font-roboto: Roboto, "Arial"
+}
+
+.text-green-sp{
+    color: #1DB954;
+}
+
+.background{
+    background: #121212;
+}
+
+
+.background-linear {
+    background: linear-gradient(to right, #151515, #131313);
+}
+
+.animation-rotate{
+    animation: rotateAnimation 4s linear infinite;
+}
+
+@keyframes rotateAnimation {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
