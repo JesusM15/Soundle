@@ -47,9 +47,6 @@ export default function GameScreen(){
         componentDidMount();
     }, [id])
 
-    useEffect(() => {
-        console.log("secret song: ", secretSong);
-    }, [secretSong]);
 
     const filteredSuggestions = useMemo(() => {
         const current = guessInputs[activeInputIndex]?.value || "";
