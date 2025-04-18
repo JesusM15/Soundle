@@ -132,6 +132,7 @@ export default function GameScreen(){
                 navigate('/')
             }}
             onRestart={() => {
+                navigate('/', {replace: true})
                 navigate(`/game/${id}`, { replace: true });
             }}
             isWinner={isWinner}
