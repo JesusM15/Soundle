@@ -5,7 +5,7 @@ function GameCompleteModal({ isVisible, isWinner, onRestart, onBack }){
     if(!isVisible) return null;
 
     return <article className="h-screen text-white w-full justify-center bg-black/10 p-4 absolute flex  items-center top-0 bottom-0 left-0 right-0 m-auto z-50 flex-col">
-        <div className="bg-black/90 rounded-xl  gap-2 p-4 w-md flex flex-col items-center">
+        <div className="bg-black/90 rounded-xl  gap-2 p-4 w-full sm:w-md flex flex-col items-center">
             <h3 className="text-white font-roboto text-xl font-semibold">
                 {isWinner ? "Felicidades acertaste!" : "Sigue intentando :("}
             </h3>

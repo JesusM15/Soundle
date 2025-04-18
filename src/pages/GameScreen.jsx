@@ -153,7 +153,7 @@ export default function GameScreen(){
             }}
             isWinner={isWinner}
         />
-        <section className="flex items-center justify-center p-12 flex-col gap-12">
+        <section className="flex items-center justify-center p-8 sm:p-12 flex-col gap-12">
             <picture className="border-2 rounded-full border-green-600/90 relative">
                 <button
                     className={`opacity-70 z-10 flex justify-center items-center
@@ -193,7 +193,7 @@ export default function GameScreen(){
                 onEnd={() => setIsPlaying(false)} 
             />
 
-            <section className=" w-lg h-96 flex flex-col gap-2">
+            <section className=" w-full sm:w-lg h-96 flex flex-col gap-2">
                 {guessInputs.map((guess, index) => (
                         <div key={index} className="relative">
                             <input
