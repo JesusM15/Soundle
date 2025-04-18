@@ -29,6 +29,23 @@ export default function GameScreen(){
     const [ isWinner, setIsWinner ] = useState(false);
     const audioRef = useRef(null);
 
+    const resetGame = async () => {
+        setGuessInputs(
+            Array.from({ length: 5 }, (_, i) => ({
+                value: "",
+                color: "",
+                disabled: i !== 0, // Solo el primero habilitado
+            }))
+        );
+        setActiveInputIndex(0);
+        setGameOver(false);
+        setIsWinner(false);
+        setIsPlaying(false);
+    
+        const newSecretSong = await getSecretSong(id);
+        setSecretSong(newSecretSong);
+    };    
+
     const componentDidMount = async() => {
         setIsLoading(true);
         const artist = await getArtist(id);
@@ -132,8 +149,7 @@ export default function GameScreen(){
                 navigate('/')
             }}
             onRestart={() => {
-                navigate('/', {replace: true})
-                navigate(`/game/${id}`, { replace: true });
+                resetGame();
             }}
             isWinner={isWinner}
         />
