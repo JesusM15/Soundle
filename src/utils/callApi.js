@@ -42,5 +42,24 @@ export const getAlbumTracks = async (albumId) => {
     }
 };
 
+export const getArtist = async (artistId) => {
+    try {
+        const response = await axios.get(`${BASE_URL}artist/${artistId}`);
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching artist:", error);
+        return [];
+    }
+}
 
+
+export const getSecretSong = async (artistId) => {
+    try {
+        const response = await axios.get(`${BASE_URL}secret_song/${artistId}`);
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching artist:", error);
+        return [];
+    }
+}
 

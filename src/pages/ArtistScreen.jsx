@@ -2,18 +2,26 @@ import React, { useEffect, useState } from "react";
 import Layout from "./Layout";
 import { getArtists } from "../utils/callApi";
 import ArtistCard from "../components/ArtistCard";
-
+import { ScaleLoader } from "react-spinners";
 function ArtistScreen(){
+    const [ isLoading, setIsLoading ] = useState(true);
     const [ artists, setArtists ] = useState([]);
 
     const componentDidMount = async() => {
+        setIsLoading(true);
         const data = await getArtists();
         setArtists(data);
+        setIsLoading(false);
     }
 
     useEffect(() => {
         componentDidMount();
     }, []);
+
+    if(isLoading) return <section className="flex items-center justify-center h-screen w-full background">
+        <ScaleLoader 
+    color={"#1db954"} />
+    </section>
 
     return <Layout>
         <section className=" flex flex-col" id="artists">

@@ -26,7 +26,7 @@ export default function ArtistCard({ artist }){
             </div>
             <div className="items-end flex">
                 <Link className="text-white bg-green-400/20 px-6 p-1
-                    rounded-sm border border-green-900
+                    rounded-sm border border-green-900 hover:bg-green-400/50 transition-colors
                 "
                 to={`/game/${artist.id}`}
                 >
