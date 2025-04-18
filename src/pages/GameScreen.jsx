@@ -132,7 +132,7 @@ export default function GameScreen(){
                 navigate('/')
             }}
             onRestart={() => {
-                window.location.reload();
+                navigate(`/game/${id}`);
             }}
             isWinner={isWinner}
         />
