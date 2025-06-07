@@ -100,7 +100,7 @@ export default function GameScreen(){
 
         setGuessInputs(updatedInputs);
 
-        if (color !== "green" && activeInputIndex < 4) {
+        if (color !== "green" && activeInputIndex < 5) {
             setActiveInputIndex(prev => prev + 1);
         }
     };
