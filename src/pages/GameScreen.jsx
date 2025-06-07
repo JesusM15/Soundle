@@ -124,7 +124,7 @@ export default function GameScreen(){
     };
 
     useEffect(() => {
-        if(activeInputIndex == 4 && gameOver == false){
+        if(activeInputIndex == 5 && gameOver == false){
             setGameOver(true);
         }
     }, [activeInputIndex]);
