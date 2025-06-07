@@ -13,7 +13,7 @@ export default function ArtistCard({ artist }){
                 <img    
                     src={artist.image}
                     alt={`${artist.name} on Soundle`}
-                    className="h-24 sm:h-36 rounded-full"
+                    className="h-24 w-24 sm:w-36 sm:h-36 rounded-full object-cover "
                 />
             </a> 
             <div className="text-white font-roboto flex p-2 sm:p-4 flex-col flex-1">
