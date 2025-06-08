@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { getSecretSongAudio } from "../utils/callApi";
 export default function AudioPlayer({ src, isPlaying, timeLimit, onEnd, setIsPlaying }) {
   const audioRef = useRef(null);
-
+  if(!src) return null;
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
@@ -41,7 +41,6 @@ export default function AudioPlayer({ src, isPlaying, timeLimit, onEnd, setIsPla
 
       const fetchAudio = async () => {
         const blob = await getSecretSongAudio(src);  // ya es un Blob directamente
-        console.log("blob", blob);
         const url = URL.createObjectURL(blob);
         audioRef.current.src = url;
       };

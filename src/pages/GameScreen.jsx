@@ -27,6 +27,7 @@ export default function GameScreen(){
     );
     const [activeInputIndex, setActiveInputIndex] = useState(0);
     const [ isWinner, setIsWinner ] = useState(false);
+    const [ secretSongAudio, setSecretSongAudio ] = useState(null);
     const audioRef = useRef(null);
 
     const resetGame = async () => {
@@ -43,7 +44,11 @@ export default function GameScreen(){
         setIsPlaying(false);
     
         const newSecretSong = await getSecretSong(id);
-        setSecretSong(newSecretSong);
+        if(newSecretSong){
+            setSecretSong(newSecretSong.song);
+            setSecretSongAudio(newSecretSong?.secretId);
+        }
+
     };    
 
     const componentDidMount = async() => {
@@ -55,7 +60,10 @@ export default function GameScreen(){
 
         if (data.length > 0) {
             const secretSong = await getSecretSong(id);
-            setSecretSong(secretSong);
+            if(secretSong){
+                setSecretSong(secretSong.song);
+                setSecretSongAudio(secretSong?.secretId);
+            }
         }
         setIsLoading(false);
     }
@@ -185,8 +193,8 @@ export default function GameScreen(){
             
             {/* {/* <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/0Zp34KjC2hUTTbo67fVFQt?utm_source=generator&theme=0" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe> */}
             <AudioPlayer 
-                key={secretSong} 
-                src={secretSong}
+                key={secretSongAudio || ''} 
+                src={secretSongAudio || ''}
                 isPlaying={isPlaying} 
                 setIsPlaying={setIsPlaying}
                 timeLimit={gameOver ? 15 : (15 / (5-activeInputIndex)) }
