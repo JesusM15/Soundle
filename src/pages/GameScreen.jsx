@@ -154,7 +154,7 @@ export default function GameScreen(){
             isWinner={isWinner}
         />
         <section className="flex items-center justify-center p-8 sm:p-12 flex-col gap-12">
-            <picture className="border-2 rounded-full border-green-600/90 relative">
+            <picture className="border-2 h-24 w-24 sm:w-36 sm:h-36 rounded-full border-green-600/90 relative">
                 <button
                     className={`opacity-70 z-10 flex justify-center items-center
                         absolute top-0 bottom-0 left-0 right-0 m-auto cursor-pointer`}
