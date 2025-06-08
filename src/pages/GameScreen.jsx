@@ -154,7 +154,7 @@ export default function GameScreen(){
             isWinner={isWinner}
         />
         <section className="flex items-center justify-center p-8 sm:p-12 flex-col gap-12">
-            <picture className="border-2 h-24 w-24 sm:w-36 sm:h-36 rounded-full border-green-600/90 relative">
+            <picture className="border-2 rounded-full border-green-600/90 relative">
                 <button
                     className={`opacity-70 z-10 flex justify-center items-center
                         absolute top-0 bottom-0 left-0 right-0 m-auto cursor-pointer`}
@@ -178,15 +178,15 @@ export default function GameScreen(){
                 <img 
                     src={artist?.images[0]?.url}
                     alt={`${artist?.name || 'sin encontrar'} en Soundle`}
-                    className={`h-48 rounded-full ${isPlaying ? 'animation-rotate' : ''}`}
+                    className={`h-48 w-48 object-cover rounded-full ${isPlaying ? 'animation-rotate' : ''}`}
                 />
             </picture>
 
             
             {/* {/* <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/0Zp34KjC2hUTTbo67fVFQt?utm_source=generator&theme=0" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe> */}
             <AudioPlayer 
-                key={secretSong?.src} 
-                src={secretSong?.src} 
+                key={secretSong} 
+                src={secretSong}
                 isPlaying={isPlaying} 
                 setIsPlaying={setIsPlaying}
                 timeLimit={gameOver ? 15 : (15 / (5-activeInputIndex)) }

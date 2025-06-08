@@ -63,3 +63,15 @@ export const getSecretSong = async (artistId) => {
     }
 }
 
+export const getSecretSongAudio = async (secretSongId) => {
+    try {
+        const response = await axios.get(`${BASE_URL}audio/secret/${secretSongId}`, {
+            responseType: 'blob'
+        });
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching secret song audio:", error);
+        return null;
+    }
+}
+
