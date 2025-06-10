@@ -160,6 +160,7 @@ export default function GameScreen(){
                 resetGame();
             }}
             isWinner={isWinner}
+            secretSong={secretSong}
         />
         <section className="flex items-center justify-center p-8 sm:p-12 flex-col gap-12">
             <picture className="border-2 rounded-full border-green-600/90 relative">

@@ -1,6 +1,6 @@
 import React from "react";
 
-function GameCompleteModal({ isVisible, isWinner, onRestart, onBack }){
+function GameCompleteModal({ isVisible, isWinner, onRestart, onBack, secretSong }){
     
     if(!isVisible) return null;
 
@@ -8,6 +8,7 @@ function GameCompleteModal({ isVisible, isWinner, onRestart, onBack }){
         <div className="bg-black/90 rounded-xl  gap-2 p-4 w-full sm:w-md flex flex-col items-center">
             <h3 className="text-white font-roboto text-xl font-semibold">
                 {isWinner ? "Felicidades acertaste!" : "Sigue intentando :("}
+                {!isWinner && "La canción era: " + secretSong?.title } 
             </h3>
             <p className="text-white">¿Qué deseas hacer ahora?</p>
             <div className="flex gap-6 pt-4 w-full">
