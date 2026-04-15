@@ -8,50 +8,53 @@ import { ScaleLoader } from "react-spinners";
 import './../index.css';
 import GameCompleteModal from "../components/GameCompleteModal";
 
-export default function GameScreen(){    
+export default function GameScreen() {
     const { id } = useParams();
     const navigate = useNavigate();
-    
-    const [ artist, setArtist ] = useState(null);
-    const [ songs, setSongs ] = useState([]);
-    const [ isLoading, setIsLoading ] = useState(true);
-    const [ gameOver, setGameOver ] = useState(false);
-    const [ isPlaying, setIsPlaying ] = useState(false);
-    const [ secretSong, setSecretSong ] = useState(null);
+
+    const [artist, setArtist] = useState(null);
+    const [songs, setSongs] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [gameOver, setGameOver] = useState(false);
+    const [isPlaying, setIsPlaying] = useState(false);
+    const [secretSong, setSecretSong] = useState(null);
     const [guessInputs, setGuessInputs] = useState(
         Array.from({ length: 5 }, (_, i) => ({
             value: "",
             color: "",
-            disabled: i !== 0, // Solo el primer input habilitado
+            disabled: i !== 0,
         }))
     );
     const [activeInputIndex, setActiveInputIndex] = useState(0);
-    const [ isWinner, setIsWinner ] = useState(false);
-    const [ secretSongAudio, setSecretSongAudio ] = useState(null);
+    const [isWinner, setIsWinner] = useState(false);
+    const [secretSongAudio, setSecretSongAudio] = useState(null);
     const audioRef = useRef(null);
 
     const resetGame = async () => {
+        // Immediately clear audio so old AudioPlayer unmounts — prevents old song bleeding into new round
+        setSecretSongAudio(null);
+        setSecretSong(null);
+        setIsPlaying(false);
+
         setGuessInputs(
             Array.from({ length: 5 }, (_, i) => ({
                 value: "",
                 color: "",
-                disabled: i !== 0, // Solo el primero habilitado
+                disabled: i !== 0,
             }))
         );
         setActiveInputIndex(0);
         setGameOver(false);
         setIsWinner(false);
-        setIsPlaying(false);
-    
+
         const newSecretSong = await getSecretSong(id);
-        if(newSecretSong){
+        if (newSecretSong) {
             setSecretSong(newSecretSong.song);
             setSecretSongAudio(newSecretSong?.secretId);
         }
+    };
 
-    };    
-
-    const componentDidMount = async() => {
+    const componentDidMount = async () => {
         setIsLoading(true);
         const artist = await getArtist(id);
         setArtist(artist);
@@ -60,18 +63,17 @@ export default function GameScreen(){
 
         if (data.length > 0) {
             const secretSong = await getSecretSong(id);
-            if(secretSong){
+            if (secretSong) {
                 setSecretSong(secretSong.song);
                 setSecretSongAudio(secretSong?.secretId);
             }
         }
         setIsLoading(false);
-    }
+    };
 
     useEffect(() => {
         componentDidMount();
-    }, [id])
-
+    }, [id]);
 
     const filteredSuggestions = useMemo(() => {
         const current = guessInputs[activeInputIndex]?.value || "";
@@ -99,7 +101,7 @@ export default function GameScreen(){
         updatedInputs[activeInputIndex] = {
             value: guessSong.name,
             color,
-            disabled: true
+            disabled: true,
         };
 
         if (color !== "green" && activeInputIndex < 4) {
@@ -121,127 +123,134 @@ export default function GameScreen(){
 
     const handleKeyDown = (e, value) => {
         if (e.key === "Enter") {
-            if(filteredSuggestions?.length > 0){
+            if (filteredSuggestions?.length > 0) {
                 const firstSuggestion = filteredSuggestions[0];
                 handleInputChange(activeInputIndex, firstSuggestion.name);
                 handleGuess(firstSuggestion.name);
-            }else {
+            } else {
                 handleGuess(value);
             }
         }
     };
 
     useEffect(() => {
-        if(activeInputIndex == 5 && gameOver == false){
+        if (activeInputIndex === 5 && gameOver === false) {
             setGameOver(true);
         }
     }, [activeInputIndex]);
 
-
     useEffect(() => {
-        if(gameOver){
+        if (gameOver) {
             // setIsPlaying(true);
         }
     }, [gameOver]);
-    
-    if(isLoading) return <section className="flex items-center justify-center h-screen w-full background">
-        <ScaleLoader 
-    color={"#1db954"} />
-    </section>
 
+    if (isLoading) return (
+        <section className="flex items-center justify-center h-screen w-full background">
+            <ScaleLoader color={"#1db954"} />
+        </section>
+    );
 
-    return <Layout>
-        <GameCompleteModal 
-            isVisible={gameOver}
-            onBack={() => {
-                navigate('/')
-            }}
-            onRestart={() => {
-                resetGame();
-            }}
-            isWinner={isWinner}
-            secretSong={secretSong}
-        />
-        <section className="flex items-center justify-center p-8 sm:p-12 flex-col gap-12">
-            <picture className="border-2 rounded-full border-green-600/90 relative">
-                <button
-                    className={`opacity-70 z-10 flex justify-center items-center
-                        absolute top-0 bottom-0 left-0 right-0 m-auto cursor-pointer`}
-                        onClick={() => {
-                            setIsPlaying(prev => !prev);
-                        }}
-                >
-            {!isPlaying ?       <FaPlay 
-                        size={36}
-                        color={"green"}
-                        className={`text-green-sb `} />
-                    
-                    : <FaPause 
-                        size={36}
-                        color={"green"}
-                        className={`text-green-sb `} 
-                    
-                    />}
-                </button>
-                
-                <img 
-                    src={artist?.images[0]?.url}
-                    alt={`${artist?.name || 'sin encontrar'} en Soundle`}
-                    className={`h-48 w-48 object-cover rounded-full ${isPlaying ? 'animation-rotate' : ''}`}
-                />
-            </picture>
-
-            
-            {/* {/* <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/0Zp34KjC2hUTTbo67fVFQt?utm_source=generator&theme=0" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe> */}
-            <AudioPlayer 
-                key={secretSongAudio || ''} 
-                src={secretSongAudio || ''}
-                isPlaying={isPlaying} 
-                setIsPlaying={setIsPlaying}
-                timeLimit={gameOver ? 15 : (15 / (5-activeInputIndex)) }
-                onEnd={() => setIsPlaying(false)} 
+    return (
+        <Layout>
+            <GameCompleteModal
+                isVisible={gameOver}
+                onBack={() => navigate('/')}
+                onRestart={() => resetGame()}
+                isWinner={isWinner}
+                secretSong={secretSong}
             />
+            {/* h-full + overflow-y-auto: page scrolls internally, preventing dropdown from growing the document */}
+            <section className="h-full overflow-y-auto overflow-x-hidden">
+                <div className="flex items-center justify-center px-4 py-10 sm:py-12 flex-col gap-8 max-w-xl mx-auto">
 
-            <section className=" w-full sm:w-lg h-96 flex flex-col gap-2">
-                {guessInputs.map((guess, index) => (
-                        <div key={index} className="relative">
+                {/* Artist avatar with play button */}
+                <picture className="relative flex-shrink-0">
+                    <div className="absolute inset-0 rounded-full ring-2 ring-green-sp/40 ring-offset-2 ring-offset-transparent z-10 pointer-events-none" />
+
+                    <img
+                        src={artist?.images[0]?.url}
+                        alt={`${artist?.name || 'sin encontrar'} en Soundle`}
+                        className={`h-40 w-40 sm:h-48 sm:w-48 object-cover rounded-full ${isPlaying ? 'animation-rotate' : ''}`}
+                    />
+
+                    {/* Play/Pause button always visible */}
+                    {!isPlaying ? (
+                        <button
+                            onClick={() => setIsPlaying(true)}
+                            className="absolute inset-0 m-auto z-20 flex items-center justify-center cursor-pointer"
+                        >
+                            <FaPlay size={28} color={"#1db954"} className="drop-shadow-lg" />
+                        </button>
+                    ) : (
+                        <button
+                            onClick={() => setIsPlaying(false)}
+                            className="absolute inset-0 m-auto z-20 flex items-center justify-center cursor-pointer"
+                        >
+                            <FaPause size={28} color={"#1db954"} className="drop-shadow-lg" />
+                        </button>
+                    )}
+                </picture>
+
+                <AudioPlayer
+                    key={secretSongAudio || ''}
+                    src={secretSongAudio || ''}
+                    isPlaying={isPlaying}
+                    setIsPlaying={setIsPlaying}
+                    timeLimit={gameOver ? 15 : (15 / (5 - activeInputIndex))}
+                    onEnd={() => setIsPlaying(false)}
+                />
+
+                {/* Guess inputs */}
+                <section className="w-full">
+                    {guessInputs.map((guess, index) => (
+                        <div key={index} className="relative mb-2">
                             <input
                                 type="text"
                                 value={guess.value}
                                 disabled={guess.disabled}
                                 onChange={(e) => handleInputChange(index, e.target.value)}
                                 onKeyDown={(e) => handleKeyDown(e, guess.value)}
-                                placeholder={!guess.disabled && `Escribe el nombre aquí...`}
-                                className={`w-full p-2 rounded outline-none font-roboto
-                                    ${guess.color === "green" ? "bg-green-400/60 text-white opacity-90" :
-                                        guess.color === "yellow" ? "bg-yellow-400/60 text-gray-200 opacity-90" :
-                                            guess.color === "red" ? "bg-red-400/60 text-white opacity-90" :
-                                                "bg-gray-200/10 text-white opacity-60"}
+                                placeholder={!guess.disabled ? `Intento ${index + 1} — escribe el nombre...` : ''}
+                                className={`w-full px-4 py-2.5 rounded-lg outline-none font-roboto text-sm transition-colors
+                                    placeholder:text-white/20
+                                    ${
+                                        guess.color === "green"
+                                            ? "bg-green-500/25 text-green-300 border border-green-500/40"
+                                            : guess.color === "yellow"
+                                            ? "bg-yellow-400/20 text-yellow-200 border border-yellow-400/40"
+                                            : guess.color === "red"
+                                            ? "bg-red-500/20 text-red-300 border border-red-500/30"
+                                            : "bg-white/[0.06] text-white border border-white/10"
+                                    }
+                                    disabled:cursor-default
                                 `}
                             />
 
-                            {activeInputIndex === index && filteredSuggestions.length > 0 && !gameOver &&  (
-                                <ul className="absolute z-50 w-full bg-neutral-800
-                                    text-white rounded -mt-0
-                                    max-h-60 overflow-y-auto">
-                                    {filteredSuggestions.slice(0, 5).map((song, idx) => (
+                            {activeInputIndex === index && filteredSuggestions.length > 0 && !gameOver && (
+                                <ul className="absolute z-50 w-full mt-1
+                                    bg-[#1c1c1c] border border-white/10 rounded-lg shadow-xl
+                                    max-h-52 overflow-y-auto">
+                                    {filteredSuggestions.slice(0, 6).map((song, idx) => (
                                         <li
                                             key={idx}
                                             onClick={() => handleGuess(song.name)}
-                                            className="p-2 hover:bg-neutral-900/40 cursor-pointer"
+                                            className="px-4 py-2.5 text-sm text-white/80 hover:text-white
+                                                hover:bg-white/[0.08] cursor-pointer transition-colors
+                                                border-b border-white/5 last:border-0"
                                         >
-                                            {song.name}
+                                            <span className="font-medium">{song.name}</span>
+                                            <span className="text-white/30 ml-2 text-xs">{song.album}</span>
                                         </li>
                                     ))}
                                 </ul>
                             )}
                         </div>
                     ))}
+                </section>
 
+                </div>  {/* end inner flex div */}
             </section>
-
-          
-
-        </section>
-    </Layout>
+        </Layout>
+    );
 }

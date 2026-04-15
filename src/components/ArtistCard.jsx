@@ -1,39 +1,46 @@
 import React from "react"
-import { getSongs } from "../utils/callApi"
 import { FaUsers } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 export default function ArtistCard({ artist }){
 
     return (
-        <article className="background-linear h-96 flex-1 w-full flex p-2
-            rounded-md sm:flex-row flex-col items-center
-        ">
-           <a href={artist.link} target="_blank">
-                <img    
+        <article className="w-full flex items-center gap-4 p-4 rounded-xl
+            bg-white/[0.04] border border-white/[0.07]
+            hover:bg-white/[0.08] hover:border-white/15
+            transition-all duration-200 cursor-default group"
+        >
+            {/* Avatar */}
+            <a href={artist.link} target="_blank" rel="noopener noreferrer" className="flex-shrink-0">
+                <img
                     src={artist.image}
                     alt={`${artist.name} on Soundle`}
-                    className="h-24 w-24 sm:w-36 sm:h-36 rounded-full object-cover "
+                    className="h-16 w-16 sm:h-20 sm:w-20 rounded-full object-cover ring-2 ring-green-sp/30
+                        group-hover:ring-green-sp/60 transition-all duration-200"
                 />
-            </a> 
-            <div className="text-white font-roboto flex p-2 sm:p-4 flex-col flex-1">
-                <h3 className="font-semibold text-md sm:text-2xl">
+            </a>
+
+            {/* Info */}
+            <div className="flex-1 min-w-0">
+                <h3 className="text-white font-semibold text-base sm:text-lg truncate">
                     {artist.name}
                 </h3>
-                <p className="text-sm sm:flex hidden gap-1 items-center">
-                    <FaUsers color={""} className="text-green-sp" /> {artist?.followers.toLocaleString("EN-US")} Seguidores                    
+                <p className="text-white/40 text-xs sm:text-sm flex items-center gap-1.5 mt-0.5">
+                    <FaUsers className="text-green-sp flex-shrink-0" />
+                    {artist?.followers?.toLocaleString("en-US")} fans
                 </p>
             </div>
-            <div className="items-end flex">
-                <Link className="text-white bg-green-400/20 sm:px-6 px-12 p-1
-                    rounded-sm border border-green-900 hover:bg-green-400/50 transition-colors
-                    sm:text-md text-sm
-                    "
+
+            {/* Play button */}
+            <Link
                 to={`/game/${artist.id}`}
-                >
-                    Jugar
-                </Link>
-            </div>
+                className="flex-shrink-0 text-sm font-semibold px-5 py-2 rounded-full
+                    bg-green-sp/20 text-green-sp border border-green-sp/30
+                    hover:bg-green-sp hover:text-black
+                    transition-all duration-200"
+            >
+                Jugar
+            </Link>
         </article>
-    )
+    );
 }

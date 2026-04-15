@@ -21,8 +21,22 @@
     color: #1DB954;
 }
 
+.bg-green-sp {
+    background-color: #1DB954;
+}
+
 .background{
     background: #121212;
+}
+
+html, body {
+    height: 100%;
+    overflow: hidden;
+}
+
+#root {
+    height: 100%;
+    overflow: hidden;
 }
 
 
@@ -41,4 +55,31 @@
     to {
         transform: rotate(360deg);
     }
+}
+
+/* ─── Custom scrollbar ─────────────────────────────────────── */
+
+/* Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #3a3a3a #121212;
+}
+
+/* Chrome, Edge, Safari */
+*::-webkit-scrollbar {
+    width: 5px;
+}
+
+*::-webkit-scrollbar-track {
+    background: #121212;
+    border-radius: 99px;
+}
+
+*::-webkit-scrollbar-thumb {
+    background: #3a3a3a;
+    border-radius: 99px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+    background: #555555;
 }
